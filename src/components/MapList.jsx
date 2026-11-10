@@ -1,8 +1,3 @@
-const maps = [
-  { id: 1, name: 'Abe\'s Oddyssee', points: '5', author: "Adi" },
-  { id: 2, name: 'Astral', points: '5', author: "thom." },
-]
-
 function MapList({ maps }) {
     return (
         <ul className="map-list">
@@ -16,6 +11,4 @@ function MapList({ maps }) {
     )
 }
 
-export default function Menu() {
-    return <MapList maps={maps} />
-}
+export default MapList

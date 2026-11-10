@@ -1,14 +1,14 @@
-import Menu from './Menu.jsx'
+import { Routes, Route } from 'react-router'
+import MapsPage from './pages/MapsPage.jsx'
+import MapInfoPage from './pages/MapInfoPage.jsx'
+import ReviewPage from './pages/ReviewPage.jsx'
 
-const App = () => {
+export default function App() {
   return (
-    <div className="App">
-      <h1>test</h1>
-      <Menu/>
-    </div>
-  );
+    <Routes>
+      <Route path="/" element={<MapsPage />} />
+      <Route path="/:mapId" element={<MapInfoPage />} />
+      <Route path="/:mapId/review" element={<ReviewPage />} />
+    </Routes>
+  )
 }
-
-
-
-export default App
