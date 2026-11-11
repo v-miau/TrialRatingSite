@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 const difficulties = {
     Challenging: { id: '01', name: 'Challenging' },
     Expert: { id: '02', name: 'Expert' },
@@ -41,6 +43,11 @@ const thumbnailDifficultyOverrides = {
     'Feria Sevilla': 'Challenging',
 };
 
+const thumbnailAspectRatios = [
+    { css: '5 / 2', value: 5 / 2 },
+    { css: '16 / 9', value: 16 / 9 },
+];
+
 function toImageFilename(mapName) {
     return mapName
         .normalize('NFKD')
@@ -56,14 +63,60 @@ function getThumbnailFilename(mapName) {
 }
 
 function MapImage({ mapName, category }) {
+    const [loadedImage, setLoadedImage] = useState(null);
     const difficulty = difficulties[thumbnailDifficultyOverrides[mapName] ?? category];
-    if (!difficulty || !mapName) {
+    const imageUrl = difficulty && mapName
+        ? `http://maniacdn.net/vad1/trialsite_rebuild/List_Hardest/List_Hardest_${difficulty.id}_${difficulty.name}/${getThumbnailFilename(mapName)}`
+        : null;
+
+    useEffect(() => {
+        if (!imageUrl) return undefined;
+
+        let isCurrent = true;
+        const image = new Image();
+        image.onload = () => {
+            if (!isCurrent) return;
+
+            const imageRatio = image.naturalWidth / image.naturalHeight;
+            const closestRatio = thumbnailAspectRatios.reduce((closest, candidate) =>
+                Math.abs(Math.log(imageRatio / candidate.value)) < Math.abs(Math.log(imageRatio / closest.value))
+                    ? candidate
+                    : closest
+            );
+            setLoadedImage({ url: imageUrl, aspectRatio: closestRatio.css, failed: false });
+        };
+        image.onerror = () => {
+            if (isCurrent) {
+                setLoadedImage({ url: imageUrl, aspectRatio: null, failed: true });
+            }
+        };
+        image.src = imageUrl;
+
+        return () => {
+            isCurrent = false;
+        };
+    }, [imageUrl]);
+
+    if (!imageUrl) {
         return <p>Thumbnail unavailable for this map.</p>;
     }
 
-    const imageUrl = `http://maniacdn.net/vad1/trialsite_rebuild/List_Hardest/List_Hardest_${difficulty.id}_${difficulty.name}/${getThumbnailFilename(mapName)}`;
-
-    return <img className="img-fluid" src={imageUrl} alt={`${mapName} map thumbnail`} />;
+    const imageIsLoaded = loadedImage?.url === imageUrl;
+    return (
+        imageIsLoaded
+            ? loadedImage.failed
+                ? <p role="status">Thumbnail failed to load.</p>
+                : (
+                    <div className="map-image-frame border rounded overflow-hidden" style={{ aspectRatio: loadedImage.aspectRatio }}>
+                        <img
+                            className="w-100 h-100 object-fit-cover"
+                            src={imageUrl}
+                            alt={`${mapName} map thumbnail`}
+                        />
+                    </div>
+                )
+            : <div className="map-image-loading border rounded" role="status">Loading thumbnail...</div>
+    );
 }
 
 export default MapImage

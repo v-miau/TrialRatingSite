@@ -30,6 +30,20 @@
     overscroll-behavior: contain;
 }
 
+.map-info-placeholder {
+    min-height: 12rem;
+}
+
+.map-image-frame {
+    width: 100%;
+}
+
+.map-image-loading {
+    min-height: 12rem;
+    display: grid;
+    place-items: center;
+}
+
 @media (max-width: 575.98px) {
     .maps-page {
         grid-template-columns: minmax(0, 1fr);

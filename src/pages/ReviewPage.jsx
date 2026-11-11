@@ -1,5 +1,13 @@
+import { useParams } from 'react-router'
+
 function ReviewPage() {
-    return <main><h1>Review</h1></main>
+    const { mapId } = useParams()
+
+    return (
+        <main>
+            <h1>Review for {mapId}</h1>
+        </main>
+    )
 }
 
 export default ReviewPage

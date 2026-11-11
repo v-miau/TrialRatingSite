@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { fetchMaps, mapCategories } from '../maps.js';
 // For fetch
 
-function normalizeSearchText(value) {
+function normalizeSearchText(value) { // Fix searches
     return value.toLocaleLowerCase().replace(/[\s\p{P}\p{S}]/gu, '');
 }
 
@@ -25,7 +25,7 @@ function CategoriesList() { // Build difficulty list for page
 }
 
 export default function MapsPage() { // Page
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState('');  // Search
     const { data: maps = [], isPending, error } = useQuery({
         queryKey: ['maps'],
         queryFn: fetchMaps,
