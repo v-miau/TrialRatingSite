@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router';
 import BackButton from "../components/BackButton.jsx";
 import MapImage from "../components/MapImage.jsx";
+import MapReview from "../components/MapReview.jsx";
 import { fetchMaps } from '../maps.js';
 import Header from "../components/Header.jsx"
 
@@ -28,11 +29,9 @@ function MapInfoPage() {
                             <aside className="col-12 col-md-6" aria-label="Map thumbnail">
                                 <MapImage mapName={map.name} category={map.category} />
                             </aside>
-                            <section className="col-12 col-md-6" aria-label="Map information">
-                                <div className="map-info-placeholder h-100 border rounded">
-                                    
-                                </div>
-                            </section>
+                            <div className="col-12 col-md-6">
+                                <MapReview key={map.id} mapId={map.id} />
+                            </div>
                         </div>
                     </>
                 )}
