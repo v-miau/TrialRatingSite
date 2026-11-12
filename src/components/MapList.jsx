@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { getMapReviewStatus } from '../mapReviewStorage.js'
+import { getMapReviewStatus } from '../services/mapReviewStorage.js'
 
 function MapReviewScore({ mapId }) {
     const reviewStatus = getMapReviewStatus(mapId)

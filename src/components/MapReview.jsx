@@ -1,20 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { loadMapReview } from '../services/mapReviewStorage.js'
 
-function loadReview(mapId) {
-    try {
-        return {
-            text: localStorage.getItem(`map-review:${mapId}`) ?? '',
-            score: localStorage.getItem(`map-score:${mapId}`),
-            error: null,
-        }
-    } catch (error) {
-        return { text: '', score: null, error: error.message }
-    }
-}
-
-function MapReview({ mapId }) {
-    const [review] = useState(() => loadReview(mapId))
+function MapReview({ mapId }) { // Display review data
+    const [review] = useState(() => loadMapReview(mapId))
 
     return (
         <section className="h-100 border rounded p-3" aria-label="Map review">

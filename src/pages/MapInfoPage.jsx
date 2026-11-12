@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import BackButton from "../components/BackButton.jsx";
 import MapImage from "../components/MapImage.jsx";
 import MapReview from "../components/MapReview.jsx";
-import { fetchMaps } from '../maps.js';
+import { fetchMaps } from '../services/maps.js';
 import Header from "../components/Header.jsx"
 
 function MapInfoPage() {
@@ -11,7 +11,7 @@ function MapInfoPage() {
     const { data: maps = [], isPending, error } = useQuery({
         queryKey: ['maps'],
         queryFn: fetchMaps,
-        staleTime: 5 * 60 * 1000,
+        staleTime: 60 * 60 * 1000,
     });
     const map = maps.find(({ id }) => id === mapId);
 

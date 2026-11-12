@@ -2,15 +2,15 @@ import MapList from '../components/MapList.jsx';
 import Header from '../components/Header.jsx';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { fetchMaps, mapCategories } from '../maps.js';
-import { getMapReviewStatus } from '../mapReviewStorage.js';
+import { fetchMaps, /*mapCategories*/ } from '../services/maps.js';
+import { getMapReviewStatus } from '../services/mapReviewStorage.js';
 // For fetch
 
 function normalizeSearchText(value) { // Fix searches
     return value.toLocaleLowerCase().replace(/[\s\p{P}\p{S}]/gu, '');
 }
 
-function CategoriesList() { // Build difficulty list for page
+/* function CategoriesList() { // Build difficulty list for page, unused but keeping it here for now
     return (
         <section aria-label="Map categories" className="mb-3">
             <h2 className="h5">Categories</h2>
@@ -23,7 +23,7 @@ function CategoriesList() { // Build difficulty list for page
             </ul>
         </section>
     );
-}
+} */
 
 export default function MapsPage() { // Page
     const [search, setSearch] = useState('');  // Search
@@ -34,7 +34,7 @@ export default function MapsPage() { // Page
     const { data: maps = [], isPending, error } = useQuery({
         queryKey: ['maps'],
         queryFn: fetchMaps,
-        staleTime: 5 * 60 * 1000,
+        staleTime: 60 * 60 * 1000,
     });
     const searchTerm = normalizeSearchText(search);
     const mapsWithReviewStatus = maps.map((map) => ({
@@ -70,7 +70,7 @@ export default function MapsPage() { // Page
             <Header />
             <main className="container py-3 maps-page">
                 <aside className="maps-controls">
-                    <CategoriesList />
+                    {/* <CategoriesList /> */}
                     <div>
                         <label className="form-label" htmlFor="map-search">Search maps</label>
                         <input
