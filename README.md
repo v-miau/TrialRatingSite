@@ -8,8 +8,8 @@ This is my Trial Rating App project that I've created for the WOH1 course. It's 
 - TanStack Query, formerly known as React Query to handle some data-fetching.
 - React-router to allow the app to work without reloading the browser.
 
-Map thumbnails are stored in `public/map-thumbnails` and served with the app.
-This keeps them available on HTTPS-hosted deployments such as GitHub Pages.
+On the fix/github-pages-thumbnails branch, the thumbnails are stored in `public/map-thumbnails` and served with the app.
+This keeps them available on HTTPS-hosted deployments such as GitHub Pages. This version of the app is deployed only due to project requirements.
 
 
 # React + Vite
