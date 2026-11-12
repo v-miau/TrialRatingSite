@@ -6,7 +6,7 @@ import { fetchMaps, /*mapCategories*/ } from '../services/maps.js';
 import { getMapReviewStatus } from '../services/mapReviewStorage.js';
 // For fetch
 
-function fixSearchText(value) { // Fix searches
+function normalizeSearchText(value) { // Fix searches
     return value.toLocaleLowerCase().replace(/[\s\p{P}\p{S}]/gu, '');
 }
 
