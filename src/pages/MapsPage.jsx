@@ -6,6 +6,16 @@ import { fetchMaps, /*mapCategories*/ } from '../services/maps.js';
 import { getMapReviewStatus } from '../services/mapReviewStorage.js';
 // For fetch
 
+const SEARCH_SESSION_KEY = 'map-search';
+
+function loadSavedSearch() {
+    try {
+        return { value: sessionStorage.getItem(SEARCH_SESSION_KEY) ?? '', error: null };
+    } catch (error) {
+        return { value: '', error: `Could not restore search: ${error.message}` };
+    }
+}
+
 function normalizeSearchText(value) { // Fix searches
     return value.toLocaleLowerCase().replace(/[\s\p{P}\p{S}]/gu, '');
 }
@@ -26,7 +36,9 @@ function normalizeSearchText(value) { // Fix searches
 } */
 
 export default function MapsPage() { // Page
-    const [search, setSearch] = useState('');  // Search
+    const [savedSearch] = useState(loadSavedSearch);
+    const [search, setSearch] = useState(savedSearch.value);  // Search
+    const [searchStorageError, setSearchStorageError] = useState(savedSearch.error);
     const [sortBy, setSortBy] = useState('points');
     const [reverseOrder, setReverseOrder] = useState(false);
     const [showReviewed, setShowReviewed] = useState(true);
@@ -36,6 +48,17 @@ export default function MapsPage() { // Page
         queryFn: fetchMaps,
         staleTime: 60 * 60 * 1000,
     });
+
+    function updateSearch(value) {
+        setSearch(value);
+        try {
+            sessionStorage.setItem(SEARCH_SESSION_KEY, value);
+            setSearchStorageError(null);
+        } catch (error) {
+            setSearchStorageError(`Could not save search: ${error.message}`);
+        }
+    }
+
     const searchTerm = normalizeSearchText(search);
     const mapsWithReviewStatus = maps.map((map) => ({
         ...map,
@@ -78,9 +101,10 @@ export default function MapsPage() { // Page
                             id="map-search"
                             type="search"
                             value={search}
-                            onChange={(event) => setSearch(event.target.value)}
+                            onChange={(event) => updateSearch(event.target.value)}
                             placeholder="Name or Author"
                         />
+                        {searchStorageError && <p role="alert">{searchStorageError}</p>}
                         <div className="mt-3">
                             <label className="form-label" htmlFor="map-sort">Sort by</label>
                             <select
