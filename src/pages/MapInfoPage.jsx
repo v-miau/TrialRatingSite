@@ -24,7 +24,7 @@ function MapInfoPage() {
                 {!isPending && !error && !map && <p role="alert">Map not found.</p>} {/* Map id not real */}
                 {map && (
                     <>
-                        <h1>{map.name}</h1>
+                        <h1>{map.name} by {map.author}</h1>
                         <div className="row g-3 align-items-stretch">
                             <aside className="col-12 col-md-6" aria-label="Map thumbnail">
                                 <MapImage mapName={map.name} category={map.category} />
