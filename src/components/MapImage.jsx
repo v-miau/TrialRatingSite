@@ -37,6 +37,8 @@ const thumbnailFilenameOverrides = { //Exceptions bc Vadi messed up his filename
     'Black Cyalume III: Neon Chrome': 'bc3_tmtrial_1.jpg',
     'Delta-V': 'deltav_tmtrial_1.jpg',
     'i.': 'i._tmtrial_1.jpg',
+    'Threadbare': 'threadbare_tmtrial_1.png',
+    'Haywire': 'haywire_tmtrial_1.png',
 };
 
 const thumbnailDifficultyOverrides = { // Extra override for Feria, used to be Chall
@@ -66,7 +68,7 @@ function MapImage({ mapName, category }) { // Fetch image from maniacdn
     const [loadedImage, setLoadedImage] = useState(null);
     const difficulty = difficulties[thumbnailDifficultyOverrides[mapName] ?? category];
     const imageUrl = difficulty && mapName
-        ? `http://maniacdn.net/vad1/trialsite_rebuild/List_Hardest/List_Hardest_${difficulty.id}_${difficulty.name}/${getThumbnailFilename(mapName)}`
+        ? `${import.meta.env.BASE_URL}map-thumbnails/List_Hardest_${difficulty.id}_${difficulty.name}/${getThumbnailFilename(mapName)}`
         : null;
 
     useEffect(() => { // Load / Error callbacks
