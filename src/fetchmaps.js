@@ -10,7 +10,7 @@ export const mapCategories = [
 const sheetId = '1TSgZRs_AT2Six0HaJXTWfQCsSmFu8RNKhK5MM4xIAhQ';
 const sheetGid = '1676223853';
 
-export async function fetchMaps() {
+export async function fetchMaps() { // Fetch maps from Google Sheets
     const url = new URL(`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq`);
     url.searchParams.set('tqx', 'out:json');
     url.searchParams.set('gid', sheetGid);

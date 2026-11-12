@@ -2,39 +2,26 @@ import MapList from '../components/MapList.jsx';
 import Header from '../components/Header.jsx';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { fetchMaps, mapCategories } from '../maps.js';
-// For fetch
+import { fetchMaps, mapCategories } from '../fetchmaps.js';
 
-function normalizeSearchText(value) { // Fix searches
+function fixSearchText(value) { // Fix searches
     return value.toLocaleLowerCase().replace(/[\s\p{P}\p{S}]/gu, '');
 }
 
-function CategoriesList() { // Build difficulty list for page
-    return (
-        <section aria-label="Map categories" className="mb-3">
-            <h2 className="h5">Categories</h2>
-            <ul className="list-inline mb-0">
-                {mapCategories.map(({ name, range }) => (
-                    <li className="list-inline-item" key={name}>
-                        <strong>{name}:</strong> {range}
-                    </li>
-                ))}
-            </ul>
-        </section>
-    );
-}
 
-export default function MapsPage() { // Page
-    const [search, setSearch] = useState('');  // Search
-    const { data: maps = [], isPending, error } = useQuery({
+
+
+export default function MapsPage() {
+    const [search, setSearch] = useState(''); // Create Search useState
+    const { data: maps = [], isPending, error } = useQuery({ // Async map data fetch with React-Query
         queryKey: ['maps'],
         queryFn: fetchMaps,
         staleTime: 5 * 60 * 1000,
     });
-    const searchTerm = normalizeSearchText(search);
+    const searchTerm = fixSearchText(search);
     const filteredMaps = maps.filter((map) =>
         [map.name, map.author]
-            .some((value) => value != null && normalizeSearchText(value).includes(searchTerm))
+            .some((value) => value != null && fixSearchText(value).includes(searchTerm))
     );
 
     return (
@@ -42,7 +29,6 @@ export default function MapsPage() { // Page
             <Header />
             <main className="container py-3 maps-page">
                 <aside className="maps-controls">
-                    <CategoriesList />
                     <div>
                         <label className="form-label" htmlFor="map-search">Search maps</label>
                         <input
@@ -56,11 +42,11 @@ export default function MapsPage() { // Page
                     </div>
                 </aside>
                 <section className="maps-results" aria-label="Map results">
-                    {isPending && <p role="status">Loading maps...</p>}
-                    {error && <p role="alert">{error.message}</p>}
-                    {!isPending && !error && maps.length === 0 && <p>No maps found.</p>}
-                    {!isPending && !error && maps.length > 0 && filteredMaps.length === 0 && <p>No maps match your search.</p>}
-                    {!isPending && !error && filteredMaps.length > 0 && <MapList maps={filteredMaps} />}
+                    {isPending && <p role="status">Loading maps...</p>} {/* Loading maps */}
+                    {error && <p role="alert">{error.message}</p>} {/* Failed to load maps */}
+                    {!isPending && !error && maps.length === 0 && <p>No maps found.</p>} {/* Empty searchbar and no results */}
+                    {!isPending && !error && maps.length > 0 && filteredMaps.length === 0 && <p>No maps match your search.</p>} {/* Too much searching */}
+                    {!isPending && !error && filteredMaps.length > 0 && <MapList maps={filteredMaps} />} {/* Maps shown if everything ready */}
                 </section>
             </main>
         </>

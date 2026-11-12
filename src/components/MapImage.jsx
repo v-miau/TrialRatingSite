@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const difficulties = {
+const difficulties = { // Legend for Vadi's maniacdn foldering
     Challenging: { id: '01', name: 'Challenging' },
     Expert: { id: '02', name: 'Expert' },
     Hardcore: { id: '03', name: 'Hardcore' },
@@ -39,16 +39,16 @@ const thumbnailFilenameOverrides = { //Exceptions bc Vadi messed up his filename
     'i.': 'i._tmtrial_1.jpg',
 };
 
-const thumbnailDifficultyOverrides = {
+const thumbnailDifficultyOverrides = { // Extra override for Feria, used to be Chall
     'Feria Sevilla': 'Challenging',
 };
 
-const thumbnailAspectRatios = [
+const thumbnailAspectRatios = [ // Two possible aspect ratios to respect thumbnails
     { css: '5 / 2', value: 5 / 2 },
     { css: '16 / 9', value: 16 / 9 },
 ];
 
-function toImageFilename(mapName) {
+function toImageFilename(mapName) { // Legend to clean up map names to get name for file
     return mapName
         .normalize('NFKD')
         .replace(/\p{Diacritic}/gu, '')
@@ -58,18 +58,18 @@ function toImageFilename(mapName) {
         .replace(/^_+|_+$/gu, '');
 }
 
-function getThumbnailFilename(mapName) {
+function getThumbnailFilename(mapName) { // Get image file names
     return thumbnailFilenameOverrides[mapName] ?? `${toImageFilename(mapName)}_tmtrial_1.jpg`;
 }
 
-function MapImage({ mapName, category }) {
+function MapImage({ mapName, category }) { // Fetch image from maniacdn
     const [loadedImage, setLoadedImage] = useState(null);
     const difficulty = difficulties[thumbnailDifficultyOverrides[mapName] ?? category];
     const imageUrl = difficulty && mapName
         ? `http://maniacdn.net/vad1/trialsite_rebuild/List_Hardest/List_Hardest_${difficulty.id}_${difficulty.name}/${getThumbnailFilename(mapName)}`
         : null;
 
-    useEffect(() => {
+    useEffect(() => { // Load / Error callbacks
         if (!imageUrl) return undefined;
 
         let isCurrent = true;
