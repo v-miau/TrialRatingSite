@@ -44,7 +44,7 @@
     place-items: center;
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 689.98px) {
     .maps-page {
         grid-template-columns: minmax(0, 1fr);
         grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
